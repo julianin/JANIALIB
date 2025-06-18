@@ -1,0 +1,24 @@
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "jania"
+version = "0.1.0"
+description = "Multipurpose python utils"
+readme = "README.md"
+license = {file = "LICENSE"}
+authors = [{name = "Julian Ania", email = "julian.ania@zebraventures.eu"}]
+keywords = ["utils", "jania"]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent",
+    "License :: OSI Approved :: MIT License",
+]
+dependencies = [
+    "toml",
+    "PyYAML"
+]
+
+[project.urls]
+"Homepage" = "https://github.com/julianin"

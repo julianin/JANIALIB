@@ -1,0 +1,9 @@
+README.md
+pyproject.toml
+jania/__init__.py
+jania/configenv.py
+jania.egg-info/PKG-INFO
+jania.egg-info/SOURCES.txt
+jania.egg-info/dependency_links.txt
+jania.egg-info/requires.txt
+jania.egg-info/top_level.txt
