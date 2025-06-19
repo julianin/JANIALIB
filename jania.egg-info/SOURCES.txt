@@ -1,6 +1,7 @@
 README.md
 pyproject.toml
 jania/__init__.py
+jania/cleanJSON.py
 jania/configenv.py
 jania.egg-info/PKG-INFO
 jania.egg-info/SOURCES.txt
