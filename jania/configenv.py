@@ -3,6 +3,8 @@ import importlib
 import toml
 import yaml
 import json
+from dotenv import load_dotenv
+load_dotenv()
 
 _custom_config = None
 _custom_config_dict = {}
