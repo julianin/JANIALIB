@@ -1,2 +1,6 @@
 toml
 PyYAML
+python-dotenv
+pdf2image
+Pillow
+openai

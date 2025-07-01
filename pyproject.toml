@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "jania"
-version = "0.2.2"
+version = "0.3.0"
 description = "Multipurpose python utils"
 readme = "README.md"
 license = {file = "LICENSE"}
@@ -17,8 +17,12 @@ classifiers = [
 ]
 dependencies = [
     "toml",
-    "PyYAML"
+    "PyYAML",
+    "python-dotenv",
+    "pdf2image",
+    "Pillow",        # Muy recomendable añadirlo explícitamente
+    "openai"         # Si la parte de LLM es fundamental para tu librería
 ]
 
 [project.urls]
-"Homepage" = "https://github.com/julianin"
+"Homepage" = "https://github.com/julianin/JANIALIB"
