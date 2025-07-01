@@ -9,7 +9,7 @@ try:
 except ImportError:
     openai = None
 
-from configenv import env
+from jania.configenv import env
 
 def extractPDF(
     prompt: str,
