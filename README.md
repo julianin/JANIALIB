@@ -170,3 +170,10 @@ MIT
 ## Autor
 
 Julian Ania
+
+## NOTES
+```bash
+git tag -a v0.3.1 -m "Release v0.3.1"
+git push origin  v0.3.1
+```
+  
