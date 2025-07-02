@@ -23,9 +23,9 @@ pip install .
 * toml
 * PyYAML
 * python-dotenv
-* pdf2image
+* pymupdf
 * Pillow
-* openai (opcional, solo si usas funciones LLM)
+* openai
 
 ## Funcionalidades principales
 

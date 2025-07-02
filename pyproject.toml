@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "jania"
-version = "0.3.6"
+version = "0.3.7"
 description = "Multipurpose python utils"
 readme = "README.md"
 license = {file = "LICENSE"}
@@ -19,7 +19,7 @@ dependencies = [
     "toml",
     "PyYAML",
     "python-dotenv",
-    "pdf2image",
+    "pymupdf",
     "Pillow",        # Muy recomendable añadirlo explícitamente
     "openai"         # Si la parte de LLM es fundamental para tu librería
 ]

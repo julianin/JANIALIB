@@ -1,13 +1,16 @@
 import io
-import tempfile
-from pdf2image import convert_from_path
-from typing import BinaryIO, Dict, Any, Optional
 import base64
+from typing import BinaryIO, Dict, Any, Optional
 
 try:
     import openai
 except ImportError:
     openai = None
+
+try:
+    import fitz  # PyMuPDF
+except ImportError:
+    fitz = None
 
 from jania.configenv import env
 
@@ -25,24 +28,22 @@ def extractPDF(
 
     Si no se indica openai_api_key, la busca con env("OPENAI_API_KEY").
     """
-    images_data = []
-    with tempfile.TemporaryDirectory() as tmpdir:
-        fp = f"{tmpdir}/{nombre_archivo}"
-        with open(fp, "wb") as f:
-            f.write(archivo.read())
+    if fitz is None:
+        raise ImportError("Falta la librería pymupdf. Instálala con 'pip install pymupdf'.")
 
-        # Convertir PDF a imágenes en memoria
-        images = convert_from_path(fp)
-        for img in images[:max_images]:
-            buf = io.BytesIO()
-            img.save(buf, format="PNG")
-            img_bytes = buf.getvalue()
-            img_b64 = base64.b64encode(img_bytes).decode("utf-8")
-            images_data.append({
-                "type": "image_url",
-                "image_url": {"url": f"data:image/png;base64,{img_b64}"}
-            })
-            buf.close()
+    # Lee el PDF directamente a memoria
+    pdf_bytes = archivo.read()
+    doc = fitz.open(stream=pdf_bytes, filetype="pdf")
+    images_data = []
+    for page_num in range(min(max_images, doc.page_count)):
+        page = doc.load_page(page_num)
+        pix = page.get_pixmap(dpi=200)
+        img_bytes = pix.tobytes("png")
+        img_b64 = base64.b64encode(img_bytes).decode("utf-8")
+        images_data.append({
+            "type": "image_url",
+            "image_url": {"url": f"data:image/png;base64,{img_b64}"}
+        })
 
     messages = [
         {"role": "system", "content": prompt},
