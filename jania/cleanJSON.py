@@ -30,8 +30,23 @@ def cleanJSON(text, indent=2, debug=False):
 
     text = re.sub(r"[^\x09\x0A\x0D\x20-\x7E\xA0-\uFFFF]", "", text)
 
-    pattern = r'(\{(?:[^{}]|(?R))*\}|\[(?:[^\[\]]|(?R))*\])'
-    matches = re.findall(pattern, text, re.DOTALL)
+    def extract_first_json_block(s):
+        # Busca el primer { o [ y extrae hasta la llave/corchete equilibrado
+        for start_char, end_char in [('{', '}'), ('[', ']')]:
+            start = s.find(start_char)
+            if start == -1:
+                continue
+            count = 0
+            for i in range(start, len(s)):
+                if s[i] == start_char:
+                    count += 1
+                elif s[i] == end_char:
+                    count -= 1
+                if count == 0:
+                    return [s[start:i + 1]]
+        return []
+
+    matches = extract_first_json_block(text)
 
     if not matches:
         for start, end in [('{', '}'), ('[', ']')]:
