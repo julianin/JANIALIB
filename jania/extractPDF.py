@@ -35,7 +35,7 @@ def extractPDF(
     images_data = []
     for page_num in range(min(max_images, doc.page_count)):
         page = doc.load_page(page_num)
-        pix = page.get_pixmap(dpi=200)
+        pix = page.get_pixmap(dpi=400)
         img_bytes = pix.tobytes("png")
         img_b64 = base64.b64encode(img_bytes).decode("utf-8")
         images_data.append({

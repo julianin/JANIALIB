@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "jania"
-version = "0.3.10"
+version = "0.3.11"
 description = "Multipurpose python utils"
 readme = "README.md"
 license = {file = "LICENSE"}
