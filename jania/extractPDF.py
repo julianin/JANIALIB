@@ -25,13 +25,11 @@ def extractPDF(
     """
     Recibe un prompt y un PDF, convierte cada página a imagen (en memoria)
     y consulta el LLM Vision. Devuelve la respuesta del LLM.
-
     Si no se indica openai_api_key, la busca con env("OPENAI_API_KEY").
     """
     if fitz is None:
         raise ImportError("Falta la librería pymupdf. Instálala con 'pip install pymupdf'.")
 
-    # Lee el PDF directamente a memoria
     pdf_bytes = archivo.read()
     doc = fitz.open(stream=pdf_bytes, filetype="pdf")
     images_data = []
@@ -60,11 +58,13 @@ def extractPDF(
     if openai is None:
         raise ImportError("Falta la librería openai. Instálala con 'pip install openai'.")
 
-    openai.api_key = api_key
+    client = openai.OpenAI(api_key=api_key)
 
-    response = openai.ChatCompletion.create(
+    response = client.chat.completions.create(
         model=model,
-        messages=messages
+        messages=messages,
+        # max_tokens=10000,
     )
 
     return {"respuesta_llm": response.choices[0].message.content}
+
