@@ -22,7 +22,10 @@ def extractPDF(
         model: str = "gpt-4o",  # Cambiado a gpt-4o que es más actual
         max_images: int = 10,
         openai_api_key: Optional[str] = None,
-        dpi: int = 150  # Reducido para mejor rendimiento
+        dpi: int = 150,
+        max_tokens: int = 7000,
+        temperature: float = 0.1,
+        user_mesage: Optional[str] = None
 ) -> Dict[str, Any]:
     """
     Recibe un prompt y un PDF, convierte cada página a imagen (en memoria)
@@ -45,26 +48,20 @@ def extractPDF(
 
         for page_num in range(total_pages):
             page = doc.load_page(page_num)
-
-            # Convertir página a imagen con DPI ajustable
             pix = page.get_pixmap(dpi=dpi)
             img_bytes = pix.tobytes("png")
-
-            # Convertir a base64
             img_b64 = base64.b64encode(img_bytes).decode("utf-8")
-
             images_data.append({
                 "type": "image_url",
                 "image_url": {
                     "url": f"data:image/png;base64,{img_b64}",
-                    "detail": "high"  # Agregado para mejor calidad de análisis
+                    "detail": "high"
                 }
             })
 
     finally:
-        doc.close()  # Importante cerrar el documento
+        doc.close()
 
-    # Construir mensajes
     content = [{"type": "text", "text": f"Analiza el siguiente PDF '{nombre_archivo}' página por página:"}]
     content.extend(images_data)
 
@@ -73,7 +70,6 @@ def extractPDF(
         {"role": "user", "content": content}
     ]
 
-    # Configurar API key
     api_key = openai_api_key or env("OPENAI_API_KEY")
     if not api_key:
         raise ValueError("No se ha proporcionado clave OpenAI ni encontrada en configuración/env.")
@@ -84,8 +80,8 @@ def extractPDF(
         response = client.chat.completions.create(
             model=model,
             messages=messages,
-            max_tokens=4000,  # Agregado límite razonable
-            temperature=0.1  # Para respuestas más consistentes
+            max_tokens=max_tokens,
+            temperature=temperature
         )
 
         return {
